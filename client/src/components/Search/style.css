@@ -1,0 +1,42 @@
+.padding {
+    padding-top: 3rem;
+}
+
+.employee-form .form-group {
+    border: 1px solid #9ff0c8;
+    padding: 10px
+}
+
+.employee-form .form-group input {
+    height: 40px !important;
+    border: transparent
+}
+
+.form-control {
+    height: 80px !important;
+    background: #fff !important;
+    color: #3a4348 !important;
+    font-size: 18px;
+    border-radius: 0px;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important
+}
+
+.px-4 {
+    padding-left: 1.5rem !important
+}
+
+.employee-form .form-group .search-employee {
+    background: #22d47b;
+    border: 2px solid #22d47b;
+    color: #fff;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    -ms-border-radius: 0;
+    border-radius: 0
+}
+.form-select{
+  border:1px solid #22d47b;
+  
+}
+
