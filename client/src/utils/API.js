@@ -1,23 +1,19 @@
-/*
-    note how we wrap our api fetch in this function that allows us to do some
-    additional error / message handling for all API calls...
-*/
-function fetchJSON( url, method='get', data={} ){
-    method = method.toLowerCase()
-    const fetchOptions = {
-        method,
-        headers: {
-            'Content-Type': 'application/json',
-            // looks for a session entry in localStorage, and if so pass it
-            'Session': localStorage.session || ''
-        }
-    }
-    // only attach the body for put/post
-    if( method === 'post' || method === 'put' ) {
-        fetchOptions.body = JSON.stringify( data )
-    }
-  
-    return fetch( url,fetchOptions ).then( res=>res.json() )
-}
+import axios from "axios";
 
-export default fetchJSON
+export default {
+  getBook: function (query) {
+    return axios.get(`https://www.googleapis.com/books/v1/volumes?q=${query}`);
+  },
+  // Deletes the book with the given id
+  deleteBook: function (id) {
+    return axios.delete("/api/books/" + id).then(result => result.data);
+  },
+  // Saves a book to the database
+  saveBook: function (bookData) {
+    return axios.post("/api/books", bookData).then(result => result.data);
+  },
+  // Get the saved a books from the database
+  savedBooks: function () {
+    return axios.get("/api/books").then(result => result.data);
+  }
+};

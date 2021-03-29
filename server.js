@@ -1,41 +1,25 @@
-require( 'dotenv' ).config() // looks for .env ; process.env gets it's values
+const express = require("express");
+const mongoose = require("mongoose");
+const routes = require("./routes");
 
-const path = require('path')
-const express = require('express')
-const apiRouter = require('./app/router')
-const app = express()
+const PORT = process.env.PORT || 3001;
+const app = express();
 
-const PORT = process.env.PORT || 8080
+// Define middleware here
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-if( !process.env.MONGODB_URI ){
-   console.log( '*ERROR* You need a .env file (with MONGODB_URI,...)' )
-   process.exit()
+// Serve up static assets (usually on heroku)
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
 }
 
-// for parsing incoming POST data
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json())
+// Define API routes here
+app.use(routes)
 
-if (process.env.NODE_ENV === 'production') {
-   // for serving REACT production-build content
-   console.log( '> production: static from client/build' )
-   app.use( express.static(path.join('client','build')) )
-} else {
-   // for serving all the normal html
-   app.use( express.static('public') )
-}
+// Connect to the Mongo DB
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/googlebooks", { useNewUrlParser: true });
 
-// for routes
-apiRouter(app)
-
-// **OPTIONAL** If your REACT routing allows non-standard paths (ex. fake paths for React-Router)
-// THEN you need to enable this for server-side serving to work
-if (process.env.NODE_ENV === 'production') {
-   app.get('*', (req, res) => {
-      res.sendFile(path.join(__dirname, './client/build/index.html'))
-   })
-}
-
-app.listen(PORT, function() {
-   console.log( `Serving app on: http://localhost:${PORT}` )
-})
+app.listen(PORT, () => {
+  console.log(`🌎 ==> API server now on port ${PORT}!`);
+});
